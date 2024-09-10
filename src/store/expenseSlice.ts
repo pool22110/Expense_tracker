@@ -29,7 +29,15 @@ export const expenseSlice = createSlice({
       state.balance -= action.payload.amount;
       state.expenseSummary.push(action.payload);
     },
-    editExpense: (state, action: PayloadAction<Summary>) => {},
+    editExpense: (state, action: PayloadAction<Summary>) => {
+      const index = state.expenseSummary.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.expenseSummary[index] = {
+        ...state.expenseSummary[index],
+        ...action.payload,
+      };
+    },
     deleteExpense: (state, action: PayloadAction<string>) => {
       state.expenseSummary = state.expenseSummary.filter(
         (item) => item.id !== action.payload
