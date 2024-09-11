@@ -34,7 +34,7 @@ const TopExpense: React.FC = () => {
       <ComposedChart
         layout="vertical"
         width={400}
-        height={310}
+        height={345}
         data={data}
         margin={{
           top: 20,

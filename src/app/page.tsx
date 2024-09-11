@@ -7,6 +7,7 @@ import { store } from "@/store/store";
 import { Provider } from "react-redux";
 import { useState } from "react";
 import Modals from "@/components/Modals";
+import RecentTransaction from "@/components/RecentTransaction";
 
 export default function Home() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -53,7 +54,10 @@ export default function Home() {
           />
           <PiePresentation />
         </div>
-        <TopExpense />
+        <div className="flex gap-8 mt-8">
+          <RecentTransaction />
+          <TopExpense />
+        </div>
       </main>
     </Provider>
   );

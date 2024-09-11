@@ -10,11 +10,13 @@ interface Summary {
 
 export interface ExpenseState {
   balance: number;
+  expense: number;
   expenseSummary: Summary[];
 }
 
 const initialState: ExpenseState = {
   balance: 5000,
+  expense: 0,
   expenseSummary: [],
 };
 
@@ -27,6 +29,7 @@ export const expenseSlice = createSlice({
     },
     addExpense: (state, action: PayloadAction<Summary>) => {
       state.balance -= action.payload.amount;
+      state.expense += action.payload.amount;
       state.expenseSummary.push(action.payload);
     },
     editExpense: (state, action: PayloadAction<Summary>) => {
