@@ -2,6 +2,7 @@
 
 import Card from "@/components/Card";
 import PiePresentation from "@/components/PiePresentation";
+import TopExpense from "@/components/TopExpense";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
 
@@ -15,6 +16,7 @@ export default function Home() {
           <Card title="Expenses" amount={500} type="EXPENSE"/>
           <PiePresentation />
         </div>
+        <TopExpense />
       </main>
     </Provider>
   );
