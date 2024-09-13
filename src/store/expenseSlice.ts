@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Summary {
+export interface Summary {
   id: string;
   title: string;
   amount: number;
@@ -42,6 +42,11 @@ export const expenseSlice = createSlice({
       };
     },
     deleteExpense: (state, action: PayloadAction<string>) => {
+      const index = state.expenseSummary.findIndex(
+        (item) => item.id === action.payload
+      );
+      state.balance += state.expenseSummary[index].amount;
+      state.expense -= state.expenseSummary[index].amount;
       state.expenseSummary = state.expenseSummary.filter(
         (item) => item.id !== action.payload
       );
