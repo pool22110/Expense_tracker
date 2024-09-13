@@ -1,33 +1,21 @@
+import { RootState } from "@/store/store";
 import React from "react";
+import { useSelector } from "react-redux";
 import {
   ComposedChart,
-  Line,
-  Area,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    name: "Entertainment",
-    Expense: 800,
-  },
-  {
-    name: "Food",
-    Expense: 967,
-  },
-  {
-    name: "Travel",
-    Expense: 1098,
-  },
-];
 
 const TopExpense: React.FC = () => {
+
+  const data = useSelector((state: RootState) => state.expenseSummary);
+
   return (
     <div >
       <h1 className="text-[28px] italic font-extrabold">Top Expense</h1>
@@ -46,10 +34,10 @@ const TopExpense: React.FC = () => {
       >
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis type="number" />
-        <YAxis dataKey="name" type="category" scale="band" />
+        <YAxis dataKey="category" type="category" scale="band" />
         <Tooltip />
         <Legend />
-        <Bar dataKey="Expense" barSize={20} fill="#413ea0" />
+        <Bar dataKey="amount" barSize={20} fill="#413ea0" />
       </ComposedChart>
     </div>
   );

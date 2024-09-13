@@ -1,6 +1,13 @@
-import React, { Dispatch, SetStateAction } from "react";
+import { addBalance, addExpense, Summary } from "@/store/expenseSlice";
+import React, {
+  ButtonHTMLAttributes,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
 
 import Modal from "react-modal";
+import { useDispatch } from "react-redux";
 
 interface ModalType {
   showModal: boolean;
@@ -15,6 +22,53 @@ const Modals: React.FC<ModalType> = ({
   type,
   setModalType,
 }) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+
+  const [balance, setBalance] = useState<number>(0);
+  const [expenseData, setExpenseData] = useState<Summary>({
+    id: characters.charAt(Math.floor(Math.random() * characters.length)),
+    title: "",
+    amount: 0,
+    category: "",
+    date: new Date(),
+  });
+
+  const dispatch = useDispatch();
+
+  const handleAddBalance = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addBalance(balance));
+    setBalance(0);
+    handleCloseModal();
+  };
+
+  const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setExpenseData({
+      ...expenseData,
+      [name]:
+        name === "date"
+          ? new Date(value)
+          : name === "amount"
+          ? parseInt(value)
+          : value,
+    });
+  };
+
+  const handleAddExpense = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addExpense(expenseData));
+    setExpenseData({
+      id: characters.charAt(Math.floor(Math.random() * characters.length)),
+      title: "",
+      amount: 0,
+      category: "",
+      date: new Date(),
+    });
+    handleCloseModal();
+  };
+
   return (
     <Modal
       isOpen={showModal}
@@ -32,9 +86,24 @@ const Modals: React.FC<ModalType> = ({
         {type === "INCOME" ? "Add Balance" : "Add Expense"}
       </p>
       {type === "INCOME" ? (
-        <form className="flex gap-[14px] mt-5">
-          <input type="number" placeholder="Income Amount" className="inputfield"/>
-          <button type="submit" className="h-[51px] w-[223px] bg-[#F4BB4A] rounded-[15px]">Add Balance</button>
+        <form
+          className="flex gap-[14px] mt-5 text-black"
+          onSubmit={handleAddBalance}
+        >
+          <input
+            type="number"
+            placeholder="Income Amount"
+            className="inputfield"
+            name="balance"
+            value={balance}
+            onChange={(e) => setBalance(parseInt(e.target.value))}
+          />
+          <button
+            type="submit"
+            className="h-[51px] w-[223px] bg-[#F4BB4A] rounded-[15px]"
+          >
+            Add Balance
+          </button>
           <button
             onClick={() => {
               handleCloseModal();
@@ -46,12 +115,48 @@ const Modals: React.FC<ModalType> = ({
           </button>
         </form>
       ) : (
-        <form className="flex gap-[14px] flex-wrap mt-5">
-          <input type="text" placeholder="Title" className="inputfield"/>
-          <input type="number" placeholder="Price" className="inputfield"/>
-          <input type="text" placeholder="Select Category" className="inputfield"/>
-          <input type="date" placeholder="dd/mm/yyyy" className="inputfield"/>
-          <button type="submit" className="h-[51px] w-[223px] bg-[#F4BB4A] rounded-[15px]">Add Expense</button>
+        <form
+          className="flex gap-[14px] flex-wrap mt-5 text-black"
+          onSubmit={handleAddExpense}
+        >
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            className="inputfield"
+            value={expenseData.title}
+            onChange={handleDataChange}
+          />
+          <input
+            type="number"
+            name="amount"
+            placeholder="Price"
+            className="inputfield"
+            value={expenseData.amount}
+            onChange={handleDataChange}
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Select Category"
+            className="inputfield"
+            value={expenseData.category}
+            onChange={handleDataChange}
+          />
+          <input
+            type="date"
+            name="date"
+            placeholder="dd/mm/yyyy"
+            className="inputfield"
+            onChange={handleDataChange}
+            value={expenseData.date.toISOString().split("T")[0]}
+          />
+          <button
+            type="submit"
+            className="h-[51px] w-[223px] bg-[#F4BB4A] rounded-[15px]"
+          >
+            Add Expense
+          </button>
           <button
             onClick={() => {
               handleCloseModal();

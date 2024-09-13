@@ -1,12 +1,14 @@
+import { RootState } from "@/store/store";
 import React from "react";
+import { useSelector } from "react-redux";
 import { PieChart, Pie, Cell } from "recharts";
 
-const data = [
-  { name: "Group A", amount: 400 },
-  { name: "Group B", amount: 300 },
-  { name: "Group C", amount: 300 },
-  { name: "Group D", amount: 200 },
-];
+// const data = [
+//   { name: "Group A", amount: 400 },
+//   { name: "Group B", amount: 300 },
+//   { name: "Group C", amount: 300 },
+//   { name: "Group D", amount: 200 },
+// ];
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -38,6 +40,8 @@ const renderCustomizedLabel = ({
 };
 
 const PiePresentation: React.FC = () => {
+  const data = useSelector((state: RootState) => state.expenseSummary);
+
   return (
     <PieChart width={200} height={200}>
       <Pie
